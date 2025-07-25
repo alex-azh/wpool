@@ -57,6 +57,9 @@ func (w *WPool[T]) startErrResolver(ctx context.Context) {
 		// try do (non parallel, only this doing)
 		for {
 			w.timeout()
+			if w.ctx.Err() != nil {
+				return
+			}
 			if err := w.do(v); err == nil {
 				break
 			}
